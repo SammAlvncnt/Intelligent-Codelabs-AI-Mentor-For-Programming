@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net (Default-Deny Catch-All)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Entity validator definitions
+    function isValidUser(data, userId) {
+      return data.uid == userId
+        && data.email is string && data.email.size() > 3 && data.email.size() <= 200
+        && (data.displayName == null || (data.displayName is string && data.displayName.size() <= 100))
+        && (data.photoURL == null || (data.photoURL is string && data.photoURL.size() <= 500));
+    }
+
+    function isValidUserState(data, userId) {
+      return data.userId == userId
+        && data.currentLanguage is string && data.currentLanguage.size() <= 100
+        && data.currentDifficulty is string && data.currentDifficulty.size() <= 50
+        && data.currentSubBabIndex is int && data.currentSubBabIndex >= 0 && data.currentSubBabIndex <= 1000;
+    }
+
+    // Collection matching blocks
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner(userId) 
+        && isValidId(userId)
+        && incoming().keys().hasAll(['uid', 'email'])
+        && incoming().keys().size() >= 2
+        && isValidUser(incoming(), userId)
+        && incoming().createdAt == request.time;
+      allow update: if isOwner(userId) 
+        && isValidId(userId)
+        && isValidUser(incoming(), userId)
+        && incoming().email == existing().email  // Email is immutable
+        && incoming().updatedAt == request.time;
+      allow delete: if false; // Users cannot be deleted from frontend
+    }
+
+    match /user_states/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isOwner(userId)
+        && isValidId(userId)
+        && incoming().keys().hasAll(['userId', 'currentLanguage', 'currentDifficulty', 'currentSubBabIndex'])
+        && incoming().keys().size() >= 4
+        && isValidUserState(incoming(), userId)
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId)
+        && isValidId(userId)
+        && isValidUserState(incoming(), userId)
+        && incoming().updatedAt == request.time;
+      allow delete: if false; // Cannot be deleted from frontend
+    }
+  }
+}

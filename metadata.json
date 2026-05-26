@@ -1,0 +1,6 @@
+{
+  "name": "Intelligent CodeLabs",
+  "description": "An interactive code sandbox and AI tutor platform with Monaco editor, runtime console, and AI Insight code evaluations powered by Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
