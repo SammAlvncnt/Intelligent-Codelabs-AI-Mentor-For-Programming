@@ -111,8 +111,12 @@ export function RightPanel({
 
         {/* Output Area */}
         <div className="flex-1 bg-slate-950 rounded-lg p-3.5 border border-slate-800/80 font-mono text-xs overflow-y-auto space-y-2 select-text text-slate-100">
-          {evaluation ? (
-            evaluation.logs.map((log, i) => {
+          {evaluation ? (() => {
+            const safeLogs = Array.isArray(evaluation.logs)
+              ? evaluation.logs
+              : (typeof evaluation.logs === "string" ? (evaluation.logs as string).split("\n") : []);
+            return safeLogs.map((log, i) => {
+              if (!log) return null;
               let color = "text-slate-400";
               if (log.startsWith("[SUCCESS]")) {
                 color = "text-emerald-400 font-bold bg-emerald-950/45 px-1 rounded border border-emerald-550/20";
@@ -129,8 +133,8 @@ export function RightPanel({
                   {log}
                 </div>
               );
-            })
-          ) : (
+            });
+          })() : (
             <div className="text-slate-500 h-full flex flex-col items-center justify-center text-center gap-2 px-4 italic select-none">
               <Terminal className="w-5 h-5 text-slate-605 animate-pulse" />
               <span>Console siaga. Kirimkan kode Anda untuk memunculkan logs kompilasi runtime & diagnosa asisten AI.</span>

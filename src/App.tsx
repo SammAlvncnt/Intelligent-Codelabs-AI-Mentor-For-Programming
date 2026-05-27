@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import { Challenge, EvaluationResult } from "./types";
 import { challenges as defaultChallenges } from "./challenges";
 import { LeftPanel } from "./components/LeftPanel";
@@ -28,6 +29,19 @@ function Link({ to, children, className, id }: { to: string; children: React.Rea
     </a>
   );
 }
+
+const fadeInRise = {
+  hidden: { opacity: 0, y: 15 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: i * 0.08,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  })
+};
 
 export default function App() {
   // --- States ---
@@ -727,51 +741,65 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
             
             {/* HERO VALUE PROPOSITION SECTION */}
             <section className="relative px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden">
-              <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                className="max-w-5xl mx-auto text-center space-y-6 relative z-10"
+              >
                 
                 {/* Visual Accent Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 mx-auto animate-pulse">
+                <motion.div 
+                  variants={fadeInRise} 
+                  custom={0}
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 mx-auto animate-pulse"
+                >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Interactive AI Sandbox Playground v1.2</span>
-                </div>
+                </motion.div>
 
-                {/* Main Heading Title with beautiful linear-gradient glows */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] max-w-4xl mx-auto">
-                  {isDark ? (
-                    <>
-                      Kuasai Pemrograman Komparatif dengan <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-sky-400 to-indigo-400">Bimbingan dari AI Mentor</span>
-                    </>
-                  ) : (
-                    <>
-                      Kuasai Pemrograman Komparatif dengan <span className="text-indigo-600 font-black">Bimbingan dari AI Mentor</span>
-                    </>
-                  )}
-                </h1>
+                {/* Main Heading Title with beautiful linear-gradient glows mapping text-shimmer class */}
+                <motion.h1 
+                  variants={fadeInRise} 
+                  custom={1}
+                  className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] max-w-4xl mx-auto text-shimmer"
+                >
+                  Kuasai Pemrograman Komparatif dengan Bimbingan dari AI Mentor
+                </motion.h1>
 
                 {/* Subtitle Description */}
-                <p className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${
-                  isDark ? "text-slate-400" : "text-slate-600"
-                }`}>
+                <motion.p 
+                  variants={fadeInRise} 
+                  custom={2}
+                  className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${
+                    isDark ? "text-slate-400" : "text-slate-600"
+                  }`}
+                >
                   Tinggalkan video tutorial pasif. Belajar coding 10x lebih efektif dengan menulis solusi real, 
                   menjalankannya di editor terintegrasi, dan menelaah ulasan Big O Complexity, optimasi penulisan, 
                   serta tips industri langsung dari Gemini AI secara real-time.
-                </p>
+                </motion.p>
 
-                {/* Main Call To Actions layout */}
-                <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-sm mx-auto sm:max-w-none">
+                {/* Main Call To Actions layout with custom responsive hover transitions */}
+                <motion.div 
+                  variants={fadeInRise} 
+                  custom={3}
+                  className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-sm mx-auto sm:max-w-none"
+                >
                   <button
                     onClick={handleGetStartedState}
-                    className="w-full sm:w-auto px-8 py-4 font-sans text-sm font-bold tracking-wide text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-lg shadow-indigo-600/35 hover:shadow-indigo-550/45 hover:scale-[1.02] transition-all duration-200 ease-out flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
+                    className="w-full sm:w-auto px-8 py-4 font-sans text-sm font-bold tracking-wide text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-lg shadow-indigo-600/35 hover:shadow-indigo-550/45 hover-scale-premium transition-all duration-200 ease-out flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
                   >
                     <span>Mulai Belajar Sekarang</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </button>
-
-
-                </div>
+                </motion.div>
 
                 {/* Subtext info indicators */}
-                <div className="pt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-slate-500">
+                <motion.div 
+                  variants={fadeInRise} 
+                  custom={4}
+                  className="pt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-slate-500"
+                >
                   <span className="flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                     Offline Evaluation Fallback
@@ -786,9 +814,9 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                     Built with React & Tailwind
                   </span>
-                </div>
+                </motion.div>
 
-              </div>
+              </motion.div>
 
               {/* Decorative Background Mesh elements for Dark theme */}
               {isDark && (
@@ -861,15 +889,20 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                 </div>
               </div>
             </section>
-
-            {/* FEATURES LIST SECTION (GRID KARTU SPECIFIED BY USER) */}
             <section className={`py-16 md:py-24 border-t ${
               isDark ? "bg-[#0a0f1d]/60 border-slate-900" : "bg-slate-100/40 border-slate-200"
             }`} id="features">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                 
                 {/* Feature Session Header */}
-                <div className="text-center space-y-4 max-w-3xl mx-auto">
+                <motion.div 
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  variants={fadeInRise}
+                  custom={0}
+                  className="text-center space-y-4 max-w-3xl mx-auto"
+                >
                   <h2 className="text-3xl font-extrabold tracking-tight">
                     Mengapa Belajar di Intelligent CodeLabs?
                   </h2>
@@ -877,17 +910,26 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     Kami menggabungkan IDE terstandarisasi industri dengan asisten AI mutakhir 
                     untuk menciptakan ekosistem belajar paling mandiri dan cepat.
                   </p>
-                </div>
+                </motion.div>
 
                 {/* Features cards Grid 3 columns */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <motion.div 
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                >
                   
                   {/* Card 1: 20+ Bahasa Pemrograman */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={0}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-amber-500/10 text-amber-500 rounded-xl w-fit mb-4">
                       <Code2 className="w-6 h-6" />
                     </div>
@@ -895,14 +937,18 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Pelajari sintaks, tipe data, manipulasinya dalam JavaScript, TypeScript, Python, C++, SQL, dan banyak modul lainnya secara fleksibel.
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Card 2: AI Evaluator Instan */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={1}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 rounded-xl w-fit mb-4 animate-pulse">
                       <Cpu className="w-6 h-6" />
                     </div>
@@ -910,14 +956,18 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Dapatkan review penganalisa kode instan didukung Gemini 3.5-Flash untuk memeriksa optimasi Big O, kesesuaian logic, dan bug-fixing.
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Card 3: Kurikulum Terstruktur Easy-to-Hard */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={2}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl w-fit mb-4">
                       <Layers className="w-6 h-6" />
                     </div>
@@ -925,14 +975,18 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Materi disusun modular dari pemahaman variabel paling mendasar hingga algoritma heuristik, data structure, dan optimasi kueri lanjut.
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Card 4: Standard Industri Coding IDE */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={3}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-sky-500/10 text-sky-500 rounded-xl w-fit mb-4">
                       <Laptop className="w-6 h-6" />
                     </div>
@@ -940,14 +994,18 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Tulis program langsung di antarmuka web premium ditenagai mesin penganalisa Monaco Editor layout layaknya Visual Studio Code asli.
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Card 5: Real-time Runtime Console */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={4}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-violet-500/10 text-violet-500 rounded-xl w-fit mb-4">
                       <Terminal className="w-6 h-6" />
                     </div>
@@ -955,14 +1013,18 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Visualisasikan output log program Anda, lacak error baris per baris, dan verifikasi runtime output secara aman di panel terisolasi.
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Card 6: Gamifikasi & Streak Tracking */}
-                  <div className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group ${
-                    isDark 
-                      ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40 hover:-translate-y-1" 
-                      : "bg-white border-zinc-200/80 shadow-xs hover:-translate-y-1 hover:border-indigo-400"
-                  }`}>
+                  <motion.div 
+                    variants={fadeInRise}
+                    custom={5}
+                    className={`p-6 rounded-2xl border transition-all duration-350 hover:shadow-lg group hover:scale-[1.03] hover-scale-premium cursor-pointer ${
+                      isDark 
+                        ? "bg-[#111827]/60 border-slate-800/80 hover:border-indigo-500/30 hover:bg-slate-900/40" 
+                        : "bg-white border-zinc-200/80 shadow-xs hover:border-indigo-400"
+                    }`}
+                  >
                     <div className="p-3 bg-rose-500/10 text-rose-500 rounded-xl w-fit mb-4">
                       <Award className="w-6 h-6" />
                     </div>
@@ -970,9 +1032,9 @@ Sistem gagal memproses kode Anda. Silakan coba klik tombol **Submit Code** kemba
                     <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                       Dapatkan motivasi belajar berkesinambungan dengan pencatat streak hari, status modul lulus-uji, dan persentase pengerjaan dinamis.
                     </p>
-                  </div>
+                  </motion.div>
 
-                </div>
+                </motion.div>
 
               </div>
             </section>
